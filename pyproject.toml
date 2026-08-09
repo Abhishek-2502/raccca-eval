@@ -42,9 +42,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/raccca-eval/raccca-eval"
-Documentation = "https://github.com/raccca-eval/raccca-eval#readme"
-Repository = "https://github.com/raccca-eval/raccca-eval"
+Homepage = "https://github.com/Abhishek-2502/raccca-eval"
+Documentation = "https://github.com/Abhishek-2502/raccca-eval#readme"
+Repository = "https://github.com/Abhishek-2502/raccca-eval"
 
 [tool.hatch.build.targets.wheel]
 packages = ["raccca_eval"]
