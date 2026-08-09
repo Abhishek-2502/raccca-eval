@@ -136,7 +136,7 @@ class JudgeEngine:
         system: str,
         user: str,
         output_model: type[JudgeEvaluationOutput],
-    ):
+    ) -> tuple[JudgeEvaluationOutput, LLMCompletion]:
         try:
             return self.provider.complete_structured(
                 system=system,
@@ -159,7 +159,7 @@ class JudgeEngine:
         system: str,
         user: str,
         output_model: type[JudgeEvaluationOutput],
-    ):
+    ) -> tuple[JudgeEvaluationOutput, LLMCompletion]:
         try:
             return await self.provider.acomplete_structured(
                 system=system,
