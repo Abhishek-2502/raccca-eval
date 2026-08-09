@@ -1,0 +1,15 @@
+[
+  {
+    "query": "What causes Type 2 diabetes?",
+    "response": "Type 2 diabetes is caused by insulin resistance and impaired beta-cell function.",
+    "criteria_to_evaluate": ["relevance", "accuracy", "completeness"],
+    "reference_answer": "Insulin resistance and beta-cell dysfunction are primary causes of Type 2 diabetes.",
+    "audience": "medical students"
+  },
+  {
+    "query": "Explain photosynthesis briefly.",
+    "response": "Plants convert sunlight into energy using chlorophyll.",
+    "criteria_to_evaluate": ["relevance", "clarity", "coherence"],
+    "audience": "high school students"
+  }
+]

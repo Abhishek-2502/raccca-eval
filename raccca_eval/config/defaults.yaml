@@ -1,0 +1,11 @@
+judge_model: gpt-4o-mini
+fallback_model: null
+api_base: null
+temperature: 0.0
+max_retries: 3
+timeout_seconds: 60
+strategy: single
+scoring_scale_min: 1
+scoring_scale_max: 5
+debug: false
+weights: null
