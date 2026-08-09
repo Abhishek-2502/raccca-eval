@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import os
-
 from pathlib import Path
 
 import pytest
@@ -13,7 +12,6 @@ from raccca_eval.config.settings import RacccaSettings
 from raccca_eval.models.criteria import RacccaCriterion
 from raccca_eval.models.judge_output import JudgeCriterionOutput, JudgeEvaluationOutput
 from raccca_eval.models.request import EvaluationRequest
-
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 
