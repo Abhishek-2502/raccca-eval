@@ -5,9 +5,9 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2026-08-09
+## [0.1.1] - 2026-08-09
 
-Initial public release of **raccca-eval** — a Python SDK for evaluating LLM responses using the **RACCCA** framework:
+First public release of **raccca-eval** — a Python SDK for evaluating LLM responses using the **RACCCA** framework:
 
 **R**elevance · **A**ccuracy · **C**ompleteness · **C**larity · **C**oherence · **A**ppropriateness
 
@@ -26,10 +26,19 @@ Initial public release of **raccca-eval** — a Python SDK for evaluating LLM re
 - Documentation: getting started, configuration, and provider guides
 - Unit tests and optional integration tests with live LLM API keys
 
+### Fixed
+
+- Async retry logic now correctly awaits coroutines in `run_with_retry_async`
+- CI lint, type-check, and coverage thresholds
+
+### Changed
+
+- Improved README with richer examples, RACCCA criteria table, and correct repository links
+- Updated PyPI project URLs to `Abhishek-2502/raccca-eval`
+
 ### Requirements
 
 - Python 3.11, 3.12, or 3.13
 - An API key for your chosen LLM provider
 
-[0.1.0]: https://github.com/Abhishek-2502/raccca-eval/releases/tag/v0.1.0
-
+[0.1.1]: https://github.com/Abhishek-2502/raccca-eval/releases/tag/v0.1.1
