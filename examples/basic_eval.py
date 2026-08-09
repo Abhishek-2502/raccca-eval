@@ -1,6 +1,6 @@
 """Basic RACCCA evaluation example."""
 
-from raccca_eval import EvaluationRequest, RacccaEvaluator, RacccaCriterion
+from raccca_eval import EvaluationRequest, RacccaCriterion, RacccaEvaluator
 
 
 def main() -> None:

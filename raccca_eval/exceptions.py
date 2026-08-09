@@ -12,7 +12,13 @@ class RacccaValidationError(RacccaError):
 class RacccaProviderError(RacccaError):
     """Raised when the LLM provider returns an error."""
 
-    def __init__(self, message: str, *, provider: str | None = None, status_code: int | None = None):
+    def __init__(
+        self,
+        message: str,
+        *,
+        provider: str | None = None,
+        status_code: int | None = None,
+    ):
         super().__init__(message)
         self.provider = provider
         self.status_code = status_code

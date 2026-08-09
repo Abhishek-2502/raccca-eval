@@ -3,7 +3,6 @@
 from raccca_eval.config.settings import RacccaSettings
 from raccca_eval.evaluator import RacccaEvaluator
 from raccca_eval.judge.engine import JudgeEngine
-from raccca_eval.models.request import EvaluationRequest
 from tests.helpers import MockLLMProvider
 
 

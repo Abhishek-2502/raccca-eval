@@ -101,7 +101,9 @@ class JudgeEngine:
         return self._build_result(request, scores, summary, completions)
 
     async def _aevaluate_per_criterion(self, request: EvaluationRequest) -> EvaluationResult:
-        async def evaluate_one(criterion: RacccaCriterion) -> tuple[list[JudgeCriterionOutput], LLMCompletion, str]:
+        async def evaluate_one(
+            criterion: RacccaCriterion,
+        ) -> tuple[list[JudgeCriterionOutput], LLMCompletion, str]:
             prompt = self.prompt_builder.build_single_criterion(request, criterion)
             output, completion = await self._acall_with_fallback(
                 system=prompt.system,
@@ -128,7 +130,13 @@ class JudgeEngine:
         summary = " ".join(summaries) if summaries else "Per-criterion evaluation complete."
         return self._build_result(request, scores, summary, completions)
 
-    def _call_with_fallback(self, *, system: str, user: str, output_model: type[JudgeEvaluationOutput]):
+    def _call_with_fallback(
+        self,
+        *,
+        system: str,
+        user: str,
+        output_model: type[JudgeEvaluationOutput],
+    ):
         try:
             return self.provider.complete_structured(
                 system=system,

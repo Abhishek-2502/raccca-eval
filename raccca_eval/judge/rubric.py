@@ -32,7 +32,8 @@ RUBRIC_DEFINITIONS: dict[RacccaCriterion, RubricDefinition] = {
         criterion=RacccaCriterion.ACCURACY,
         name="Accuracy",
         definition=(
-            "The degree to which the response provides correct, reliable, and fact-based information."
+            "The degree to which the response provides correct, reliable, "
+            "and fact-based information."
         ),
         score_1="Contains major factual errors or misleading claims.",
         score_3="Mostly accurate with minor errors or unsupported claims.",
@@ -42,7 +43,8 @@ RUBRIC_DEFINITIONS: dict[RacccaCriterion, RubricDefinition] = {
         criterion=RacccaCriterion.COMPLETENESS,
         name="Completeness",
         definition=(
-            "The degree to which the response covers all essential aspects of the topic or question."
+            "The degree to which the response covers all essential aspects "
+            "of the topic or question."
         ),
         score_1="Misses most essential points.",
         score_3="Covers main points but omits important details.",

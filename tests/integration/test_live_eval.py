@@ -2,7 +2,7 @@
 
 import pytest
 
-from raccca_eval import EvaluationRequest, RacccaEvaluator, RacccaCriterion
+from raccca_eval import EvaluationRequest, RacccaCriterion, RacccaEvaluator
 
 
 @pytest.mark.integration

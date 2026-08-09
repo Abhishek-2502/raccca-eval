@@ -2,7 +2,7 @@
 
 import asyncio
 
-from raccca_eval import EvaluationRequest, RacccaEvaluator, RacccaCriterion
+from raccca_eval import EvaluationRequest, RacccaCriterion, RacccaEvaluator
 
 
 async def main() -> None:
