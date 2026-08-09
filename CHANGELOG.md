@@ -22,19 +22,7 @@ First public release of **raccca-eval** — a Python SDK for evaluating LLM resp
 - Retry logic, optional fallback judge model, and JSON recovery for malformed LLM output
 - Configurable criterion weights for weighted overall scores
 - Usage metadata: token counts, latency, and call count per evaluation
-- Examples: basic eval, batch async eval, Azure + Ollama setup
-- Documentation: getting started, configuration, and provider guides
-- Unit tests and optional integration tests with live LLM API keys
-
-### Fixed
-
-- Async retry logic now correctly awaits coroutines in `run_with_retry_async`
-- CI lint, type-check, and coverage thresholds
-
-### Changed
-
-- Improved README with richer examples, RACCCA criteria table, and correct repository links
-- Updated PyPI project URLs to `Abhishek-2502/raccca-eval`
+- Examples, documentation, and unit tests
 
 ### Requirements
 
