@@ -21,7 +21,7 @@ class CriterionScore(BaseModel):
     """Score and rationale for a single RACCCA criterion."""
 
     criterion: RacccaCriterion
-    score: int = Field(..., ge=1, le=5)
+    score: int = Field(..., description="The final score for this criterion.")
     rationale: str
     confidence: float | None = Field(default=None, ge=0.0, le=1.0)
 
@@ -30,7 +30,7 @@ class EvaluationResult(BaseModel):
     """Structured output from a RACCCA evaluation."""
 
     scores: dict[str, CriterionScore]
-    overall_score: float = Field(..., ge=1.0, le=5.0)
+    overall_score: float = Field(..., description="Weighted average score across criteria.")
     summary: str
     model: str
     usage: UsageMetadata

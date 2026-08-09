@@ -20,7 +20,7 @@ def extract_json_text(raw: str) -> str:
     """Extract JSON string from raw LLM output."""
     text = raw.strip()
     if not text:
-        raise RacccaParseError("Empty response from judge LLM.")
+        raise RacccaParseError("Empty response from judge LLM.", raw_response=raw)
 
     block_match = _JSON_BLOCK_PATTERN.search(text)
     if block_match:
@@ -33,7 +33,7 @@ def extract_json_text(raw: str) -> str:
     if object_match:
         return object_match.group(0)
 
-    raise RacccaParseError("No JSON object found in judge LLM response.")
+    raise RacccaParseError("No JSON object found in judge LLM response.", raw_response=raw)
 
 
 def parse_model_response(raw: str, model: type[T]) -> T:
@@ -42,10 +42,21 @@ def parse_model_response(raw: str, model: type[T]) -> T:
     try:
         return model.model_validate_json(json_text)
     except (ValidationError, json.JSONDecodeError):
+        try:
+            from json_repair import repair_json  # type: ignore[import-not-found]
+
+            repaired = repair_json(json_text)
+            return model.model_validate_json(repaired)
+        except ImportError:
+            pass
+        except (ValidationError, json.JSONDecodeError, TypeError, ValueError):
+            pass
+
         repaired = json_text.replace("'", '"')
         try:
             return model.model_validate_json(repaired)
         except (ValidationError, json.JSONDecodeError) as exc:
             raise RacccaParseError(
-                f"Failed to parse judge output as {model.__name__}: {exc}"
+                f"Failed to parse judge output as {model.__name__}: {exc}",
+                raw_response=raw,
             ) from exc

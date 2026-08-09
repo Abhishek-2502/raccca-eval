@@ -85,16 +85,3 @@ RUBRIC_DEFINITIONS: dict[RacccaCriterion, RubricDefinition] = {
 
 def get_rubric(criterion: RacccaCriterion) -> RubricDefinition:
     return RUBRIC_DEFINITIONS[criterion]
-
-
-def format_rubric_block(criterion: RacccaCriterion, scale_min: int, scale_max: int) -> str:
-    """Format a single criterion rubric for inclusion in the judge prompt."""
-    rubric = get_rubric(criterion)
-    return (
-        f"### {rubric.name} ({criterion.value})\n"
-        f"Definition: {rubric.definition}\n"
-        f"Scoring scale {scale_min}-{scale_max}:\n"
-        f"  {scale_min} (Poor): {rubric.score_1}\n"
-        f"  3 (Acceptable): {rubric.score_3}\n"
-        f"  {scale_max} (Excellent): {rubric.score_5}\n"
-    )

@@ -29,8 +29,9 @@ def test_parse_model_response_valid() -> None:
 
 
 def test_extract_json_raises_on_empty() -> None:
-    with pytest.raises(RacccaParseError):
+    with pytest.raises(RacccaParseError) as exc_info:
         extract_json_text("   ")
+    assert exc_info.value.raw_response == "   "
 
 
 def test_extract_json_embedded_object() -> None:
@@ -39,8 +40,10 @@ def test_extract_json_embedded_object() -> None:
 
 
 def test_extract_json_raises_when_missing() -> None:
-    with pytest.raises(RacccaParseError, match="No JSON object"):
-        extract_json_text("plain text without json")
+    raw = "plain text without json"
+    with pytest.raises(RacccaParseError, match="No JSON object") as exc_info:
+        extract_json_text(raw)
+    assert exc_info.value.raw_response == raw
 
 
 def test_parse_model_response_repairs_single_quotes() -> None:
@@ -51,3 +54,10 @@ def test_parse_model_response_repairs_single_quotes() -> None:
     parsed = parse_model_response(raw, JudgeEvaluationOutput)
     assert parsed.summary == "Solid."
     assert parsed.scores[0].score == 4
+
+
+def test_parse_error_includes_raw_response() -> None:
+    raw = "not json at all"
+    with pytest.raises(RacccaParseError) as exc_info:
+        parse_model_response(raw, JudgeEvaluationOutput)
+    assert exc_info.value.raw_response == raw

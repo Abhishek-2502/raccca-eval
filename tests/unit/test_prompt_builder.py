@@ -1,6 +1,7 @@
 """Unit tests for RubricPromptBuilder."""
 
 from raccca_eval.judge.prompt_builder import RubricPromptBuilder
+from raccca_eval.judge.rubric import RubricDefinition
 from raccca_eval.models.criteria import RacccaCriterion
 from raccca_eval.models.request import EvaluationRequest
 
@@ -41,3 +42,27 @@ def test_single_criterion_prompt() -> None:
     prompt = RubricPromptBuilder().build_single_criterion(request, RacccaCriterion.ACCURACY)
     assert "Accuracy" in prompt.system
     assert "Relevance" not in prompt.system.split("## RACCCA Rubric")[1]
+
+
+def test_dynamic_scale_midpoint() -> None:
+    builder = RubricPromptBuilder(scale_min=1, scale_max=10)
+    block = builder.format_rubric_block(RacccaCriterion.RELEVANCE)
+
+    assert "5 (Acceptable)" in block
+    assert "3 (Acceptable)" not in block
+
+
+def test_rubric_overrides() -> None:
+    custom = RubricDefinition(
+        criterion=RacccaCriterion.RELEVANCE,
+        name="Custom Relevance",
+        definition="Custom definition.",
+        score_1="bad",
+        score_3="ok",
+        score_5="great",
+    )
+    builder = RubricPromptBuilder(rubric_overrides={RacccaCriterion.RELEVANCE: custom})
+    block = builder.format_rubric_block(RacccaCriterion.RELEVANCE)
+
+    assert "Custom Relevance" in block
+    assert "Custom definition." in block

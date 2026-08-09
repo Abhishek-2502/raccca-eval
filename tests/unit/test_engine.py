@@ -167,3 +167,28 @@ def test_debug_includes_raw_response(sample_request, sample_judge_output) -> Non
     result = engine.evaluate(sample_request)
 
     assert result.raw_response is not None
+
+
+def test_clamps_out_of_range_scores() -> None:
+    output = JudgeEvaluationOutput(
+        scores=[
+            JudgeCriterionOutput(
+                criterion=RacccaCriterion.RELEVANCE,
+                score=99,
+                rationale="Too high.",
+            ),
+        ],
+        summary="Test.",
+    )
+    request = EvaluationRequest(
+        query="Q",
+        response="A",
+        criteria_to_evaluate=[RacccaCriterion.RELEVANCE],
+        reference_answer="A",
+    )
+    settings = RacccaSettings(strategy="single", scoring_scale_min=1, scoring_scale_max=5)
+    engine = JudgeEngine(provider=MockLLMProvider(output), settings=settings)
+
+    result = engine.evaluate(request)
+
+    assert result.scores["relevance"].score == 5

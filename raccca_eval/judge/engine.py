@@ -189,9 +189,12 @@ class JudgeEngine:
         for item in judge_scores:
             if item.criterion not in expected:
                 continue
+
+            clamped_score = self._clamp_score(item.score, item.criterion.value)
+
             score_map[item.criterion.value] = CriterionScore(
                 criterion=item.criterion,
-                score=item.score,
+                score=clamped_score,
                 rationale=item.rationale,
                 confidence=item.confidence,
             )
@@ -238,3 +241,18 @@ class JudgeEngine:
             self.on_eval_complete(result)
 
         return result
+
+    def _clamp_score(self, score: int | float, label: str) -> int:
+        scale_min = self.settings.scoring_scale_min
+        scale_max = self.settings.scoring_scale_max
+        if scale_min <= score <= scale_max:
+            return int(round(score))
+        logger.warning(
+            "Judge returned score %s outside the configured scale bounds "
+            "[%s, %s] for '%s'. Clamping score.",
+            score,
+            scale_min,
+            scale_max,
+            label,
+        )
+        return max(scale_min, min(int(round(score)), scale_max))

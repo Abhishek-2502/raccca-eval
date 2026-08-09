@@ -11,7 +11,7 @@ class JudgeCriterionOutput(BaseModel):
     """Single criterion score returned by the judge LLM."""
 
     criterion: RacccaCriterion
-    score: int = Field(..., ge=1, le=5)
+    score: int = Field(..., description="Score awarded by the judge model.")
     rationale: str = Field(..., min_length=1)
     confidence: float | None = Field(default=None, ge=0.0, le=1.0)
 

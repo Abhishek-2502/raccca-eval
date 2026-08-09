@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from raccca_eval.judge.rubric import format_rubric_block
+from raccca_eval.judge.rubric import RubricDefinition, get_rubric
 from raccca_eval.models.criteria import RacccaCriterion
 from raccca_eval.models.request import EvaluationRequest
 
@@ -20,9 +20,31 @@ class JudgePrompt:
 class RubricPromptBuilder:
     """Builds judge prompts from an EvaluationRequest."""
 
-    def __init__(self, *, scale_min: int = 1, scale_max: int = 5) -> None:
+    def __init__(
+        self,
+        *,
+        scale_min: int = 1,
+        scale_max: int = 5,
+        rubric_overrides: dict[RacccaCriterion, RubricDefinition] | None = None,
+    ) -> None:
         self.scale_min = scale_min
         self.scale_max = scale_max
+        self.rubric_overrides = rubric_overrides or {}
+
+    def get_rubric_definition(self, criterion: RacccaCriterion) -> RubricDefinition:
+        return self.rubric_overrides.get(criterion, get_rubric(criterion))
+
+    def format_rubric_block(self, criterion: RacccaCriterion) -> str:
+        rubric = self.get_rubric_definition(criterion)
+        midpoint = (self.scale_min + self.scale_max) // 2
+        return (
+            f"### {rubric.name} ({criterion.value})\n"
+            f"Definition: {rubric.definition}\n"
+            f"Scoring scale {self.scale_min}-{self.scale_max}:\n"
+            f"  {self.scale_min} (Poor): {rubric.score_1}\n"
+            f"  {midpoint} (Acceptable): {rubric.score_3}\n"
+            f"  {self.scale_max} (Excellent): {rubric.score_5}\n"
+        )
 
     def build(
         self,
@@ -31,9 +53,7 @@ class RubricPromptBuilder:
         criteria: list[RacccaCriterion] | None = None,
     ) -> JudgePrompt:
         selected = criteria or request.criteria_to_evaluate
-        rubric_blocks = [
-            format_rubric_block(c, self.scale_min, self.scale_max) for c in selected
-        ]
+        rubric_blocks = [self.format_rubric_block(c) for c in selected]
         criteria_list = ", ".join(c.value for c in selected)
 
         system_parts = [
