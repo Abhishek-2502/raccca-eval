@@ -31,3 +31,23 @@ def test_parse_model_response_valid() -> None:
 def test_extract_json_raises_on_empty() -> None:
     with pytest.raises(RacccaParseError):
         extract_json_text("   ")
+
+
+def test_extract_json_embedded_object() -> None:
+    raw = 'Analysis complete: {"scores": [], "summary": "ok"} — done.'
+    assert extract_json_text(raw).startswith("{")
+
+
+def test_extract_json_raises_when_missing() -> None:
+    with pytest.raises(RacccaParseError, match="No JSON object"):
+        extract_json_text("plain text without json")
+
+
+def test_parse_model_response_repairs_single_quotes() -> None:
+    raw = (
+        "{'scores': [{'criterion': 'relevance', 'score': 4, 'rationale': 'Good.'}], "
+        "'summary': 'Solid.'}"
+    )
+    parsed = parse_model_response(raw, JudgeEvaluationOutput)
+    assert parsed.summary == "Solid."
+    assert parsed.scores[0].score == 4
