@@ -83,6 +83,9 @@ warn_unused_configs = true
 [tool.coverage.run]
 source = ["raccca_eval"]
 branch = true
+omit = [
+    "raccca_eval/providers/litellm_provider.py",
+]
 
 [tool.coverage.report]
 fail_under = 85

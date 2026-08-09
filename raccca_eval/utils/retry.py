@@ -55,4 +55,8 @@ async def run_with_retry_async(
         wait=wait_exponential(multiplier=min_wait, min=min_wait, max=max_wait),
         reraise=True,
     )
-    return await retryer(func)
+
+    async def _invoke() -> T:
+        return await func()
+
+    return await retryer(_invoke)
